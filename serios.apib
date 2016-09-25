@@ -2,13 +2,13 @@ FORMAT: 1A
 HOST: api.serios.sec.uni-passau.de
 
 # SERIOS
-
 <!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
 
-# Group Service Object Definition
-## CRUD operations on Service Objects (Create, Read, Update & Delete)
+# CRUD operations on Service Objects [/so/crud] 
+<!-- The URI above is ignored. Do NOT change this. This will break the layout -->
+CRUD stands for Create, Read, Update & Delete.
 
-### Create a new Service Object [POST /]
+## Create a new Service Object [POST /]
 <!-- TODO Phil 25/09/16 add attributes and body for service object-->
 Create a new ServiceObject definition and register it at SERIOS. The **unique** ServiceObject id (`soID`) is returned on success.
 
@@ -20,7 +20,7 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
 
 + Response 201 (application/json)
 
-### Retrieve the Service Object description [GET /{soID}]
+## Retrieve the Service Object description [GET /{soID}]
 Retrieve the description of a Service Object.
 
 + Request
@@ -31,7 +31,7 @@ Retrieve the description of a Service Object.
 
 + Response 200 (application/json)
 
-### Update Service Object description [PUT /{soID}]
+## Update Service Object description [PUT /{soID}]
 <!-- TODO Phil 25/09/16 add attributes and body for updating service object. Maybe include restrictions-->
 Update the description of a Service Object.
 
@@ -43,7 +43,7 @@ Update the description of a Service Object.
 
 + Response 200 (application/json)
 
-### Delete the Service Object description [DELETE /{soID}]
+## Delete the Service Object description [DELETE /{soID}]
 Delete the description of a Service Object, and all associated data
 **IMPORTANT: This also removes all appropiate Sensor Data.**
 
@@ -55,8 +55,9 @@ Delete the description of a Service Object, and all associated data
 
 + Response 200 (application/json)
 
-## Retrieving Service Objects information
-### Get all the Service Objects from a user [GET /]
+# Retrieving Service Objects Information [/so/get]
+<!-- The URI above is ignored. Do NOT change this. This will break the layout -->
+## Get all the Service Objects from a user [GET /]
 Retrieve all the Service Objects from a given user (identified by the `Authorization` header).
 
 + Request
@@ -65,7 +66,7 @@ Retrieve all the Service Objects from a given user (identified by the `Authoriza
 
 + Response 200 (application/json)
 
-### Get the description of all associated Streams [GET /{soID}]
+## Get the description of all associated Streams [GET /{soID}]
 Retrieve the description of the streams field.
 
 + Request
