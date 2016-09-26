@@ -2,9 +2,13 @@ FORMAT: 1A
 HOST: api.serios.sec.uni-passau.de
 
 # SERIOS
-<!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
+The SERIOS API is a generic service of storing and managing IoT data streams.
 
-# CRUD operations on Service Objects [/so/crud] 
+## About SERIOS
+<!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
+The implementation is open-source and can be found on [Github](https://github.com/SEDARI/serios).
+
+# CRUD operations on Service Objects [/so/crud]
 <!-- The URI above is ignored. Do NOT change this. This will break the layout -->
 CRUD stands for Create, Read, Update & Delete.
 
@@ -16,7 +20,7 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
     + Headers
         Authorization: 2932942f823b82ab34
     + Attributes
-        + description (required, string) - the description of the service object.
+        + description (required, string) - the description of the service object
 
 + Response 201 (application/json)
 
@@ -27,7 +31,7 @@ Retrieve the description of a Service Object.
     + Headers
         Authorization: 2932942f823b82ab34
     + Parameters
-        + soID (required, string, '2932942f823b82ab34') - The identifier of a service object.
+        + soID (required, string, `2932942f823b82ab34`) - The identifier of a service object
 
 + Response 200 (application/json)
 
@@ -39,7 +43,7 @@ Update the description of a Service Object.
     + Headers
         Authorization: 2932942f823b82ab34
     + Parameters
-        + soID: '2932942f823b82ab34' (required, string)  - The identifier of a service object.
+        + soID: `2932942f823b82ab34` (required, string)  - The identifier of a service object
 
 + Response 200 (application/json)
 
@@ -51,7 +55,7 @@ Delete the description of a Service Object, and all associated data
     + Headers
         Authorization: 2932942f823b82ab34
     + Parameters
-        + soID (required, string, '2932942f823b82ab34') - The identifier of a service object.
+        + soID (required, string, `2932942f823b82ab34`) - The identifier of a service object
 
 + Response 200 (application/json)
 
@@ -73,12 +77,46 @@ Retrieve the description of the streams field.
     + Headers
         Authorization: 2932942f823b82ab34
     + Parameters
-        + soID (required, string, '2932942f823b82ab34') - The identifier of a service object.
+        + soID (required, string, `2932942f823b82ab34`) - The identifier of a service object
 
 + Response 200 (application/json)
 
-# Sensor Data
-## Store and Delete data
+# Sensor Data operations
+## Store and Delete data [/data]
 
-### Push data to the platform
+### Push data to the platform [PUT /{soID}/streams/{streamID}]
+Store new data associated to the Stream of the Service Object.
+
++ Request
+    + Headers
+        Authorization: 2932942f823b82ab34
+    + Parameters
+        + soID (required, string, `2932942f823b82ab34`) - The identifier of a Service Object
+        + streamID (required, string, `temperature_sensor`) - The identifier of the Stream
+
+### Delete all data stored for a Service Object Stream [DELETE /{soID}/streams/{streamID}]
+Remove and clear all the data associated to a Stream of a Service Object.
+
++ Request
+    + Headers
+        Authorization: 2932942f823b82ab34
+    + Parameters
+        + soID (required, string, `2932942f823b82ab34`) - The identifier of a Service Object
+        + streamID (required, string, `temperature_sensor`) - The identifier of the Stream
+
+## Retrieve stored data [/getdata]
+
+### Get data stored for a Stream of a Service Object [GET /{soID}/streams/{streamID}]
+Retrieve data stored in the platform that is associated to one Stream of a Service Object.
+
++ Request
+    + Headers
+        Authorization: 2932942f823b82ab34
+    + Parameters
+        + soID (required, string, `2932942f823b82ab34`) - The identifier of a Service Object
+        + streamID (required, string, `temperature_sensor`) - The identifier of the Stream
+        + options (optinal, string) - If provided, limits the sent data. `lastUpdate` will limit to the lastest data, a timestamp will send all data from the provided timestamp to the time of the request.
+            + Values
+                + `lastUpdate`
+                + `1474879676`
 
