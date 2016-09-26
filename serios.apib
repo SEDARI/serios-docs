@@ -124,16 +124,16 @@ Remove and clear all the data associated to a Stream of a Service Object.
 
 ## Retrieve stored data [/getdata]
 
-### Get data stored for a Stream of a Service Object [GET /{soID}/streams/{streamID}]
+### Get data stored for a Stream of a Service Object [GET /{soID}/streams/{streamID}/{options}]
 Retrieve data stored in the platform that is associated to one Stream of a Service Object.
 
 + Parameters
     + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
     + streamID: `temperature_sensor` (required, string) - The id of the Stream
-    + options: (optinal, enum[string]) - If provided, limits the sent data. `lastUpdate` will limit to the lastest data, a `timestamp` will send all data from the provided timestamp to the time of the request.
+    + options: (optional, enum[string]) - If provided, limits the sent data. `lastUpdate` will limit to the latest data, a `timestamp` will send all data from the provided `timestamp` to the time of the request.
         + Members
             + `lastUpdate`
-            + '1474879676'
+            + `1474879676`
 
 + Request
     + Headers
