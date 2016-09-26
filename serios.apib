@@ -8,11 +8,15 @@ The SERIOS API is a generic service of storing and managing IoT data streams.
 <!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
 The implementation is open-source and can be found on [Github](https://github.com/SEDARI/serios).
 
-# CRUD operations on Service Objects [/so/crud]
+#Group Service Object operations
+
+Short description what Service Object are and what purpose they serve.
+
+## CRUD operations on Service Objects [/so/crud]
 <!-- The URI above is ignored. Do NOT change this. This will break the layout -->
 CRUD stands for Create, Read, Update & Delete.
 
-## Create a new Service Object [POST /]
+### Create a new Service Object [POST /]
 <!-- TODO Phil 25/09/16 add attributes and body for service object-->
 Create a new ServiceObject definition and register it at SERIOS. The **unique** ServiceObject id (`soID`) is returned on success.
 
@@ -24,7 +28,7 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
 
 + Response 201 (application/json)
 
-## Retrieve the Service Object description [GET /{soID}]
+### Retrieve the Service Object description [GET /{soID}]
 Retrieve the description of a Service Object.
 
 + Request
@@ -35,7 +39,7 @@ Retrieve the description of a Service Object.
 
 + Response 200 (application/json)
 
-## Update Service Object description [PUT /{soID}]
+### Update Service Object description [PUT /{soID}]
 <!-- TODO Phil 25/09/16 add attributes and body for updating service object. Maybe include restrictions-->
 Update the description of a Service Object.
 
@@ -47,7 +51,7 @@ Update the description of a Service Object.
 
 + Response 200 (application/json)
 
-## Delete the Service Object description [DELETE /{soID}]
+### Delete the Service Object description [DELETE /{soID}]
 Delete the description of a Service Object, and all associated data
 **IMPORTANT: This also removes all appropiate Sensor Data.**
 
@@ -59,9 +63,9 @@ Delete the description of a Service Object, and all associated data
 
 + Response 200 (application/json)
 
-# Retrieving Service Objects Information [/so/get]
+## Retrieving Service Objects Information [/so/get]
 <!-- The URI above is ignored. Do NOT change this. This will break the layout -->
-## Get all the Service Objects from a user [GET /]
+### Get all the Service Objects from a user [GET /]
 Retrieve all the Service Objects from a given user (identified by the `Authorization` header).
 
 + Request
@@ -70,7 +74,7 @@ Retrieve all the Service Objects from a given user (identified by the `Authoriza
 
 + Response 200 (application/json)
 
-## Get the description of all associated Streams [GET /{soID}]
+### Get the description of all associated Streams [GET /{soID}]
 Retrieve the description of the streams field.
 
 + Request
@@ -81,7 +85,11 @@ Retrieve the description of the streams field.
 
 + Response 200 (application/json)
 
-# Sensor Data operations
+
+# Group Sensor Data operations
+
+Short description what Sensor Data is and what purpose it serves.
+
 ## Store and Delete data [/data]
 
 ### Push data to the platform [PUT /{soID}/streams/{streamID}]
@@ -115,7 +123,7 @@ Retrieve data stored in the platform that is associated to one Stream of a Servi
     + Parameters
         + soID (required, string, `2932942f823b82ab34`) - The identifier of a Service Object
         + streamID (required, string, `temperature_sensor`) - The identifier of the Stream
-        + options (optinal, string) - If provided, limits the sent data. `lastUpdate` will limit to the lastest data, a timestamp will send all data from the provided timestamp to the time of the request.
+        + options (optinal, enum[string]) - If provided, limits the sent data. `lastUpdate` will limit to the lastest data, a timestamp will send all data from the provided timestamp to the time of the request.
             + Values
                 + `lastUpdate`
                 + `1474879676`
