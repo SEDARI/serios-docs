@@ -31,11 +31,12 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
 ### Retrieve the Service Object description [GET /{soID}]
 Retrieve the description of a Service Object.
 
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
-    + Parameters
-        + soID (required, string, `2932942f823b82ab34`) - The identifier of a service object
 
 + Response 200 (application/json)
 
@@ -43,11 +44,12 @@ Retrieve the description of a Service Object.
 <!-- TODO Phil 25/09/16 add attributes and body for updating service object. Maybe include restrictions-->
 Update the description of a Service Object.
 
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+
 + Request (application/json)
     + Headers
         Authorization: 2932942f823b82ab34
-    + Parameters
-        + soID: `2932942f823b82ab34` (required, string)  - The identifier of a service object
 
 + Response 200 (application/json)
 
@@ -55,11 +57,12 @@ Update the description of a Service Object.
 Delete the description of a Service Object, and all associated data
 **IMPORTANT: This also removes all appropiate Sensor Data.**
 
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
-    + Parameters
-        + soID (required, string, `2932942f823b82ab34`) - The identifier of a service object
 
 + Response 200 (application/json)
 
@@ -77,11 +80,12 @@ Retrieve all the Service Objects from a given user (identified by the `Authoriza
 ### Get the description of all associated Streams [GET /{soID}]
 Retrieve the description of the streams field.
 
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
-    + Parameters
-        + soID (required, string, `2932942f823b82ab34`) - The identifier of a service object
 
 + Response 200 (application/json)
 
@@ -95,36 +99,45 @@ Short description what Sensor Data is and what purpose it serves.
 ### Push data to the platform [PUT /{soID}/streams/{streamID}]
 Store new data associated to the Stream of the Service Object.
 
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + streamID: `temperature_sensor` (required, string) - The id of the Stream
+
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
-    + Parameters
-        + soID (required, string, `2932942f823b82ab34`) - The identifier of a Service Object
-        + streamID (required, string, `temperature_sensor`) - The identifier of the Stream
+
++ Response 200 (application/json)
 
 ### Delete all data stored for a Service Object Stream [DELETE /{soID}/streams/{streamID}]
 Remove and clear all the data associated to a Stream of a Service Object.
 
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + streamID: `temperature_sensor` (required, string) - The id of the Stream
+
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
-    + Parameters
-        + soID (required, string, `2932942f823b82ab34`) - The identifier of a Service Object
-        + streamID (required, string, `temperature_sensor`) - The identifier of the Stream
+
++ Response 200 (application/json)
 
 ## Retrieve stored data [/getdata]
 
 ### Get data stored for a Stream of a Service Object [GET /{soID}/streams/{streamID}]
 Retrieve data stored in the platform that is associated to one Stream of a Service Object.
 
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + streamID: `temperature_sensor` (required, string) - The id of the Stream
+    + options: (optinal, enum[string]) - If provided, limits the sent data. `lastUpdate` will limit to the lastest data, a `timestamp` will send all data from the provided timestamp to the time of the request.
+        + Members
+            + `lastUpdate`
+            + '1474879676'
+
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
-    + Parameters
-        + soID (required, string, `2932942f823b82ab34`) - The identifier of a Service Object
-        + streamID (required, string, `temperature_sensor`) - The identifier of the Stream
-        + options (optinal, enum[string]) - If provided, limits the sent data. `lastUpdate` will limit to the lastest data, a timestamp will send all data from the provided timestamp to the time of the request.
-            + Values
-                + `lastUpdate`
-                + `1474879676`
+
++ Response 200 (application/json)
 
