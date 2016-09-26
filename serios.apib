@@ -2,11 +2,11 @@ FORMAT: 1A
 HOST: api.serios.sec.uni-passau.de
 
 # SERIOS
-The SERIOS API is a generic service of storing and managing IoT data streams.
+The SERIOS API is a generic service for storing and managing IoT data streams.
 
 ## About SERIOS
 <!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
-The implementation is open-source and can be found on [Github](https://github.com/SEDARI/serios).
+The implementation is open-source and is publicly available on [Github](https://github.com/SEDARI/serios).
 
 #Group Service Object operations
 
@@ -14,7 +14,7 @@ Short description what Service Object are and what purpose they serve.
 
 ## CRUD operations on Service Objects [/so/crud]
 <!-- The URI above is ignored. Do NOT change this. This will break the layout -->
-CRUD stands for Create, Read, Update & Delete.
+Performing Create, Read, Update & Delete (CRUD) operations on Service Objects.
 
 ### Create a new Service Object [POST /]
 <!-- TODO Phil 25/09/16 add attributes and body for service object-->
@@ -27,6 +27,16 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
         + description (required, string) - the description of the service object
 
 + Response 201 (application/json)
+    {
+       "id": "23af384834be722938f",
+       "createdAt": "1474969664"
+    }
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
 
 ### Retrieve the Service Object description [GET /{soID}]
 Retrieve the description of a Service Object.
@@ -40,6 +50,12 @@ Retrieve the description of a Service Object.
 
 + Response 200 (application/json)
 
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
 ### Update Service Object description [PUT /{soID}]
 <!-- TODO Phil 25/09/16 add attributes and body for updating service object. Maybe include restrictions-->
 Update the description of a Service Object.
@@ -52,6 +68,16 @@ Update the description of a Service Object.
         Authorization: 2932942f823b82ab34
 
 + Response 200 (application/json)
+    {
+       "id": "23af384834be722938f",
+       "updatedAt": "1474979664"
+    }
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
 
 ### Delete the Service Object description [DELETE /{soID}]
 Delete the description of a Service Object, and all associated data
@@ -64,7 +90,13 @@ Delete the description of a Service Object, and all associated data
     + Headers
         Authorization: 2932942f823b82ab34
 
-+ Response 200 (application/json)
++ Response 204 (application/json)
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
 
 ## Retrieving Service Objects Information [/so/get]
 <!-- The URI above is ignored. Do NOT change this. This will break the layout -->
@@ -76,6 +108,15 @@ Retrieve all the Service Objects from a given user (identified by the `Authoriza
         Authorization: 2932942f823b82ab34
 
 + Response 200 (application/json)
+    [
+        "23af384834be722938f", "9472de2387a23b040f4"
+    ]
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
 
 ### Get the description of all associated Streams [GET /{soID}]
 Retrieve the description of the streams field.
@@ -89,12 +130,18 @@ Retrieve the description of the streams field.
 
 + Response 200 (application/json)
 
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
 
 # Group Sensor Data operations
 
 Short description what Sensor Data is and what purpose it serves.
 
-## Store and Delete data [/data]
+## Store and Delete data [/data/put]
 
 ### Push data to the platform [PUT /{soID}/streams/{streamID}]
 Store new data associated to the Stream of the Service Object.
@@ -107,7 +154,17 @@ Store new data associated to the Stream of the Service Object.
     + Headers
         Authorization: 2932942f823b82ab34
 
-+ Response 200 (application/json)
++ Response 201 (application/json)
+    {
+        "status": 201,
+        "message": "Data stored, accepted for dispatching"
+    }
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
 
 ### Delete all data stored for a Service Object Stream [DELETE /{soID}/streams/{streamID}]
 Remove and clear all the data associated to a Stream of a Service Object.
@@ -120,9 +177,15 @@ Remove and clear all the data associated to a Stream of a Service Object.
     + Headers
         Authorization: 2932942f823b82ab34
 
-+ Response 200 (application/json)
++ Response 204 (application/json)
 
-## Retrieve stored data [/getdata]
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
+## Retrieve stored data [/data/get]
 
 ### Get data stored for a Stream of a Service Object [GET /{soID}/streams/{streamID}/{options}]
 Retrieve data stored in the platform that is associated to one Stream of a Service Object.
@@ -140,4 +203,29 @@ Retrieve data stored in the platform that is associated to one Stream of a Servi
         Authorization: 2932942f823b82ab34
 
 + Response 200 (application/json)
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
+### Queries on data of a single Service Object [POST /{soID}/streams/{streamID}/search]
+501 'Not Implemented' yet.
+
++ Parameters
+    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + streamID: `temperature_sensor` (required, string) - The id of the Stream
+
++ Request (application/json)
+    + Headers
+        Authorization: 2932942f823b82ab34
+
++ Response 200 (application/json)
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
 
