@@ -8,6 +8,35 @@ The SERIOS API is a generic service for storing and managing IoT data streams.
 <!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
 The implementation is open-source and is publicly available on [Github](https://github.com/SEDARI/serios).
 
+# Data Structures
+## ServiceObject (object)
++ name (string, required) - The name of the ServiceObject
++ description (string, required) - The description of the ServiceObject
++ streams (array[Stream], required) - A collection of Streams associated to the ServiceObject
++ gateway (Gateway, optional) - The gateway where the ServiceObject is registered at
+
+## Stream (object)
++ name (string, required) - The name of the Stream
++ description (string, required) - The description of the Stream
++ channels (array[Channel], required) - A collection of Channels associated to the Stream
+
+## Channel (object)
++ name (string, required) - The name of the Channel
++ type (string, required) - The type of data of the Channel
++ unit (string, required) - The unit of the Channel
+
+## Gateway (object)
++ gatewayID (string, optional) - The identifier of the Gateway
++ name (string, optional) - The name of the Gateway
++ URL (string, optional) - The URL the Gateway can be reached with
+
+## SensorData(object)
++ channels (array[SensorDataChannel], required) - The data channels associated to the data
+
+## SensorDataChannel(object)
++ name (string, required) - The name of the data channel
++ value (string, required) - The actual value of the data
+
 #Group Service Object operations
 
 Short description what Service Object are and what purpose they serve.
@@ -23,14 +52,17 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
 + Request (application/json)
     + Headers
         Authorization: 2932942f823b82ab34
-    + Attributes
-        + description (required, string) - the description of the service object
+    + Attributes (ServiceObject)
 
 + Response 201 (application/json)
-    {
-       "id": "23af384834be722938f",
-       "createdAt": "1474969664"
-    }
+    + Attributes
+        + id (string) - The identifier of the created Service Object.
+        + createdAt (number) - The timestamp when the Service Object was created.
+    + Body
+        {
+           "id": "23af384834be722938f",
+           "createdAt": "1474969664"
+        }
 
 + Response 403 (application/json)
     {
@@ -49,6 +81,7 @@ Retrieve the description of a Service Object.
         Authorization: 2932942f823b82ab34
 
 + Response 200 (application/json)
+    + Attributes (ServiceObject)
 
 + Response 403 (application/json)
     {
@@ -66,6 +99,7 @@ Update the description of a Service Object.
 + Request (application/json)
     + Headers
         Authorization: 2932942f823b82ab34
+    + Attributes (ServiceObject)
 
 + Response 200 (application/json)
     {
@@ -100,8 +134,8 @@ Delete the description of a Service Object, and all associated data
 
 ## Retrieving Service Objects Information [/so/get]
 <!-- The URI above is ignored. Do NOT change this. This will break the layout -->
-### Get all the Service Objects from a user [GET /]
-Retrieve all the Service Objects from a given user (identified by the `Authorization` header).
+### Get all the Service Object IDs from a user [GET /]
+Retrieve all the Service Object IDs from a given user (identified by the `Authorization` header).
 
 + Request
     + Headers
@@ -129,6 +163,7 @@ Retrieve the description of the streams field.
         Authorization: 2932942f823b82ab34
 
 + Response 200 (application/json)
+    + Attributes (array[Stream])
 
 + Response 403 (application/json)
     {
@@ -153,6 +188,7 @@ Store new data associated to the Stream of the Service Object.
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
+    + Attributes (SensorData)
 
 + Response 201 (application/json)
     {
@@ -203,6 +239,7 @@ Retrieve data stored in the platform that is associated to one Stream of a Servi
         Authorization: 2932942f823b82ab34
 
 + Response 200 (application/json)
+    + Attributes (array[SensorData])
 
 + Response 403 (application/json)
     {
