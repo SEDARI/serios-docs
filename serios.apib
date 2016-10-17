@@ -5,9 +5,33 @@ HOST: api.serios.sec.uni-passau.de
 The SERIOS API is a generic service for storing and managing IoT data streams.
 
 ## About SERIOS
-<!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
-The implementation is open-source and is publicly available on [Github](https://github.com/SEDARI/serios).
+SERIOS is an open-sourced generic service for storing and managing IoT data streams.
 
+This documentation describes the publicly available API interface provided by SERIOS. It is structured by the three
+major components: Gateways, Service Objects and Sensor Data.
+
+The implementation of SERIOS is available on [Github](https://github.com/SEDARI/serios).
+
+The source code to this documentation is also available on [Github](https://github.com/SEDARI/serios-docs).
+
+## Gateways
+Gateways represents ...
+
+## Service Objects
+Service Objects provide the structure how sensor data is going to be stored. They determine which sensors will upload
+their data to the service. Multiple Sensors can be described in one Service Object in so called `Streams`. Every
+sensor can have multiple dimensions, which will be called `Channels`. E.g. a weatherboard with multiple measuring
+devices, e.g. two different for temperature, one for density and one for brightness measuring, is defined in one single
+`Stream`, but its measurement devices are defined in `Channels`.
+
+For every Service Object and its `Streams` meta data like a name and a description can be added. For `Channels`
+information like the `data type` and the `unit` for the sensor data is required.
+
+Each Service Object can have its own privacy policy. When creating a Service Object you can decide whether the stored
+data should be available to the public or only for yourself by setting the `public` attribute to `true` or `false`.
+
+## Sensor Data
+Sensor Data is ...
 
 # Data Structures
 <!-- Gateways -->
@@ -73,7 +97,7 @@ Create a new Gateway definition. The **unique** Gateway id (`gatewayID`) is retu
             "port": 443,
             "protocol": "HTTPS"
         }
-        
+
 
 + Response 201 (application/json)
     + Attributes
@@ -96,7 +120,7 @@ Retrieve the description of a Gateway.
 + Parameters
     + gatewayID: `3294b3fc38e493b93` (required, string) - The id of a Gateway
 
-+ Request 
++ Request
     + Headers
         Authorization: 2932942f823b82ab34
 
@@ -130,7 +154,7 @@ Update the description of a Gateway.
 + Parameters
     + gatewayID: `3294b3fc38e493b93` (required, string) - The id of a Gateway
 
-+ Request 
++ Request
     + Headers
         Authorization: 2932942f823b82ab34
     + Attributes (Gateway)
@@ -172,7 +196,7 @@ Delete a Gateway and all associated data
 + Parameters
     + gatewayID: `3294b3fc38e493b93` (required, string) - The id of a Gateway
 
-+ Request 
++ Request
     + Headers
         Authorization: 2932942f823b82ab34
 
@@ -189,7 +213,7 @@ Delete a Gateway and all associated data
 ### Get all Gateway IDs from a user [GET /gateway]
 Retrieve all Gateway IDs from a given user (identified by the `Authorization` header).
 
-+ Request 
++ Request
     + Headers
         Authorization: 2932942f823b82ab34
 
