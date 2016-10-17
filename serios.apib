@@ -8,12 +8,23 @@ The SERIOS API is a generic service for storing and managing IoT data streams.
 <!-- TODO Phil 25//09/16: Add description what SERIOS is. -->
 The implementation is open-source and is publicly available on [Github](https://github.com/SEDARI/serios).
 
+
 # Data Structures
+<!-- Gateways -->
+## Gateway (object)
++ name (string, required) - The name of the Gateway
++ URL (string, required) - The URI where this Gateway can be reached at
++ protocol (string, optional) - The protocol the Gateway communicates with
++ port (number, optional) - The port the Gateway communicates at
+
+
+<!-- Service Objects -->
 ## ServiceObject (object)
 + name (string, required) - The name of the ServiceObject
 + description (string, required) - The description of the ServiceObject
++ public (string, required) - The availability of the uploaded data associated to the Service Object
 + streams (array[Stream], required) - A collection of Streams associated to the ServiceObject
-+ gateway (Gateway, optional) - The gateway where the ServiceObject is registered at
++ gateway (GatewaySO, optional) - The gateway where the Service Object is registered at
 
 ## Stream (object)
 + name (string, required) - The name of the Stream
@@ -25,17 +36,173 @@ The implementation is open-source and is publicly available on [Github](https://
 + type (string, required) - The type of data of the Channel
 + unit (string, required) - The unit of the Channel
 
-## Gateway (object)
+## GatewaySO (object)
 + gatewayID (string, optional) - The identifier of the Gateway
 + name (string, optional) - The name of the Gateway
 + URL (string, optional) - The URL the Gateway can be reached with
 
+
+<!-- Sensor Data -->
 ## SensorData(object)
 + channels (array[SensorDataChannel], required) - The data channels associated to the data
 
 ## SensorDataChannel(object)
 + name (string, required) - The name of the data channel
 + value (string, required) - The actual value of the data
+
+#Group Gateway operations
+
+Short description what Gateways are and what purpose they serve.
+
+## CRUD operations on Gateways [/gate/crud]
+<!-- The URI above is ignored. Do NOT change this. This will break the layout -->
+Performing Create, Read, Update & Delete (CRUD) operations on Gateways.
+
+### Create a new Gateway [POST /gateway/]
+Create a new Gateway definition. The **unique** Gateway id (`gatewayID`) is returned on success.
+
++ Request (application/json)
+    + Headers
+        Authorization: 2932942f823b82ab34
+    + Attributes (Gateway)
+
+    + Body
+        {
+            "name": "Smart Home 1",
+            "URL": "https://gateway_test.com/dir/to/my/gateway/",
+            "port": 443,
+            "protocol": "HTTPS"
+        }
+        
+
++ Response 201 (application/json)
+    + Attributes
+        + id (string) - The identifier of the created Gateway.
+        + createdAt (number) - The timestamp when the Gateway was created.
+    + Body
+        {
+           "id": "3294b3fc38e493b93",
+           "createdAt": "1476726036 "
+        }
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
+### Retrieve the Gateway description [GET /{gatewayID}]
+Retrieve the description of a Gateway.
++ Parameters
+    + gatewayID: `3294b3fc38e493b93` (required, string) - The id of a Gateway
+
++ Request 
+    + Headers
+        Authorization: 2932942f823b82ab34
+
++ Response 200 (application/json)
+    + Attributes (Gateway)
+
+    + Body
+        {
+            "name": "Smart Home 1",
+            "URL": "https://gateway_test.com/dir/to/my/gateway/",
+            "port": 443,
+            "protocol": "HTTPS"
+        }
+
++ Response 400 (application/json)
+    {
+        "status": 400,
+        "message": "Bad Request. Could not find Gateway.
+    }
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
+
+### Update an existing Gateway [UPDATE /gateway/{gatewayID}]
+<!-- TODO Phil 17/10/2016 add restrictions to updating -->
+Update the description of a Gateway.
++ Parameters
+    + gatewayID: `3294b3fc38e493b93` (required, string) - The id of a Gateway
+
++ Request 
+    + Headers
+        Authorization: 2932942f823b82ab34
+    + Attributes (Gateway)
+
+    + Body
+        {
+            "name": "Smart Home 1",
+            "URL": "https://gateway_test.com/updated/dir/to/my/gateway/",
+            "port": 443,
+            "protocol": "HTTPS"
+        }
+
+
++ Response 200 (application/json)
+    {
+       "id": "3294b3fc38e493b93",
+       "updatedAt": "1476726991 "
+    }
+
+
++ Response 400 (application/json)
+    {
+        "status": 400,
+        "message": "Bad Request. Bad syntax used for Gateways."
+    }
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
+
+
+### Delete a Gateway [DELETE /gateway/{gatewayID}]
+Delete a Gateway and all associated data
+**IMPORTANT: This also removes all appropiate Service Objects and its uploaded Sensor Data.**
+
++ Parameters
+    + gatewayID: `3294b3fc38e493b93` (required, string) - The id of a Gateway
+
++ Request 
+    + Headers
+        Authorization: 2932942f823b82ab34
+
++ Response 204 (application/json)
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
+
+## Retrieve Gateways Information [/gate/get]
+<!-- The URI above is ignored. Do NOT change this. This will break the layout -->
+### Get all Gateway IDs from a user [GET /gateway]
+Retrieve all Gateway IDs from a given user (identified by the `Authorization` header).
+
++ Request 
+    + Headers
+        Authorization: 2932942f823b82ab34
+
++ Response 200 (application/json)
+    [
+        3294b3fc38e493b93, 394b34cf9348ab167
+    ]
+
++ Response 403 (application/json)
+    {
+        "status": 403,
+        "message": "Access was denied!"
+    }
 
 #Group Service Object operations
 
@@ -46,13 +213,68 @@ Short description what Service Object are and what purpose they serve.
 Performing Create, Read, Update & Delete (CRUD) operations on Service Objects.
 
 ### Create a new Service Object [POST /]
-<!-- TODO Phil 25/09/16 add attributes and body for service object-->
 Create a new ServiceObject definition and register it at SERIOS. The **unique** ServiceObject id (`soID`) is returned on success.
 
 + Request (application/json)
     + Headers
         Authorization: 2932942f823b82ab34
     + Attributes (ServiceObject)
+
+    + Body
+        {
+            "name": "Smart Home 1 Weather Sensors",
+            "description": "This Service Object holds all weather related sensors of Smart Home 1.",
+            "public": "true",
+            "streams": {
+                "weatherboard": {
+                    "name": "Weatherboard",
+                    "description": "The sensor that measures temperature, density and brightness of the Smart Home.",
+                    "channels": {
+                        "temperature1": {
+                            "name": "Temperature Sensor outside the house",
+                            "type": "Number",
+                            "unit": "Grad Celsius"
+                        },
+                        "temperature2": {
+                            "name": "Temperature Sensor inside the house",
+                            "type": "Number",
+                            "unit": "Grad Celsius"
+                        },
+                        "density": {
+                            "name": "Density Sensor in the bathroom",
+                            "type": "Number",
+                            "unit": "Relative Density"
+                        },
+                        "brightness": {
+                            "name": "Brightness Sensor in the bedroom.",
+                            "type": "Number",
+                            "unit": "Lux"
+                        }
+                    }
+                },
+                "location": {
+                    "name":"Location Sensor",
+                    "description":"The sensor that measures the location of the Smart Home.",
+                    "channels": {
+                        "latitude": {
+                            "name": "Latitude of the Smart Home",
+                            "type": "Number",
+                            "unit": "Degrees"
+                        },
+                        "longitude": {
+                            "name": "Longitude of the Smart Home",
+                            "type": "Number",
+                            "unit": "Degrees"
+                        }
+                    }
+                }
+            },
+            "gateway": {
+                "gatewayID": "",
+                "name": "Smart Home 1",
+                "URL": "https://gateway_test.com/dir/to/my/gateway/",
+            }
+        }
 
 + Response 201 (application/json)
     + Attributes
@@ -74,7 +296,7 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
 Retrieve the description of a Service Object.
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
 
 + Request
     + Headers
@@ -83,6 +305,68 @@ Retrieve the description of a Service Object.
 + Response 200 (application/json)
     + Attributes (ServiceObject)
 
+    + Body
+        {
+            "name": "Smart Home 1 Weather Sensors",
+            "description": "This Service Object holds all weather related sensors of Smart Home 1.",
+            "public": "true",
+            "streams": {
+                "weatherboard": {
+                    "name": "Weatherboard",
+                    "description": "The sensor that measures temperature, density and brightness of the Smart Home.",
+                    "channels": {
+                        "temperature1": {
+                            "name": "Temperature Sensor outside the house",
+                            "type": "Number",
+                            "unit": "Grad Celsius"
+                        },
+                        "temperature2": {
+                            "name": "Temperature Sensor inside the house",
+                            "type": "Number",
+                            "unit": "Grad Celsius"
+                        },
+                        "density": {
+                            "name": "Density Sensor in the bathroom",
+                            "type": "Number",
+                            "unit": "Relative Density"
+                        },
+                        "brightness": {
+                            "name": "Brightness Sensor in the bedroom.",
+                            "type": "Number",
+                            "unit": "Lux"
+                        }
+                    }
+                },
+                "location": {
+                    "name":"Location Sensor",
+                    "description":"The sensor that measures the location of the Smart Home.",
+                    "channels": {
+                        "latitude": {
+                            "name": "Latitude of the Smart Home",
+                            "type": "Number",
+                            "unit": "Degrees"
+                        },
+                        "longitude": {
+                            "name": "Longitude of the Smart Home",
+                            "type": "Number",
+                            "unit": "Degrees"
+                        }
+                    }
+                }
+            },
+            "gateway": {
+                "gatewayID": "",
+                "name": "Smart Home 1",
+                "URL": "https://gateway_test.com/dir/to/my/gateway/",
+            }
+        }
+
++ Response 400 (application/json)
+    {
+        "status": 400,
+        "message": "Bad Request. Could not find Service Object."
+    }
+
 + Response 403 (application/json)
     {
         "status": 403,
@@ -90,21 +374,84 @@ Retrieve the description of a Service Object.
     }
 
 ### Update Service Object description [PUT /{soID}]
-<!-- TODO Phil 25/09/16 add attributes and body for updating service object. Maybe include restrictions-->
+<!-- TODO Phil 11/10/16 add restrictions to updating-->
 Update the description of a Service Object.
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
 
 + Request (application/json)
     + Headers
         Authorization: 2932942f823b82ab34
     + Attributes (ServiceObject)
 
+    + Body
+        {
+            "name": "Smart Home 1 Weather Sensors",
+            "description": "This Service Object holds all weather related sensors of Smart Home 1.",
+            "public": "true",
+            "streams": {
+                "weatherboard": {
+                    "name": "Weatherboard",
+                    "description": "The sensor that measures temperature, density and brightness of the Smart Home.",
+                    "channels": {
+                        "temperature1": {
+                            "name": "Temperature Sensor outside the house",
+                            "type": "Number",
+                            "unit": "Grad Celsius"
+                        },
+                        "temperature2": {
+                            "name": "Temperature Sensor inside the house",
+                            "type": "Number",
+                            "unit": "Grad Celsius"
+                        },
+                        "density": {
+                            "name": "Density Sensor in the bathroom",
+                            "type": "Number",
+                            "unit": "Relative Density"
+                        },
+                        "brightness": {
+                            "name": "Brightness Sensor in the bedroom.",
+                            "type": "Number",
+                            "unit": "Lux"
+                        }
+                    }
+                },
+                "location": {
+                    "name":"Location Sensor",
+                    "description":"The sensor that measures the location of the Smart Home.",
+                    "channels": {
+                        "latitude": {
+                            "name": "Latitude of the Smart Home",
+                            "type": "Number",
+                            "unit": "Degrees"
+                        },
+                        "longitude": {
+                            "name": "Longitude of the Smart Home",
+                            "type": "Number",
+                            "unit": "Degrees"
+                        }
+                    }
+                }
+            },
+            "gateway": {
+                "gatewayID": "",
+                "name": "Smart Home 1",
+                "URL": "https://gateway_test.com/dir/to/my/gateway/",
+            }
+        }
+
+
 + Response 200 (application/json)
     {
        "id": "23af384834be722938f",
        "updatedAt": "1474979664"
+    }
+
++ Response 400 (application/json)
+    {
+        "status": 400,
+        "message": "Bad Request. Bad syntax used for Service Objects."
     }
 
 + Response 403 (application/json)
@@ -118,7 +465,7 @@ Delete the description of a Service Object, and all associated data
 **IMPORTANT: This also removes all appropiate Sensor Data.**
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
 
 + Request
     + Headers
@@ -156,7 +503,7 @@ Retrieve all the Service Object IDs from a given user (identified by the `Author
 Retrieve the description of the streams field.
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
 
 + Request
     + Headers
@@ -182,13 +529,33 @@ Short description what Sensor Data is and what purpose it serves.
 Store new data associated to the Stream of the Service Object.
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
     + streamID: `temperature_sensor` (required, string) - The id of the Stream
 
 + Request
     + Headers
         Authorization: 2932942f823b82ab34
     + Attributes (SensorData)
+
+    + Body
+            "channels": {
+                "temperature1": {
+                    "name": "Temperature Sensor outside the house",
+                    "value": "10.2"
+                },
+                "temperature2": {
+                    "name": "Temperature Sensor inside the house",
+                    "value": "20.8"
+                },
+                "density": {
+                    "name": "Density Sensor in the Bathroom",
+                    "value": "63"
+                },
+                "brightness": {
+                    "name": "Brightness Sensor in the Bedroom",
+                    "value": "970"
+                }
+            }
 
 + Response 201 (application/json)
     {
@@ -206,7 +573,7 @@ Store new data associated to the Stream of the Service Object.
 Remove and clear all the data associated to a Stream of a Service Object.
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
     + streamID: `temperature_sensor` (required, string) - The id of the Stream
 
 + Request
@@ -227,7 +594,7 @@ Remove and clear all the data associated to a Stream of a Service Object.
 Retrieve data stored in the platform that is associated to one Stream of a Service Object.
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
     + streamID: `temperature_sensor` (required, string) - The id of the Stream
     + options: (optional, enum[string]) - If provided, limits the sent data. `lastUpdate` will limit to the latest data, a `timestamp` will send all data from the provided `timestamp` to the time of the request.
         + Members
@@ -241,6 +608,56 @@ Retrieve data stored in the platform that is associated to one Stream of a Servi
 + Response 200 (application/json)
     + Attributes (array[SensorData])
 
+    + Body
+
+    {
+        "data": [
+            {
+                "channels": {
+                  "temperature1": {
+                      "name": "Temperature Sensor outside the house",
+                      "value": "19.2"
+                  },
+                  "temperature2": {
+                      "name": "Temperature Sensor inside the house",
+                      "value": "22.0"
+                  },
+                  "density": {
+                      "name": "Density Sensor in the Bathroom",
+                      "value": "45"
+                  },
+                  "brightness": {
+                      "name": "Brightness Sensor in the Bedroom",
+                      "value": "980"
+                  }
+                },
+                "timestamp": 1476697345
+            },
+            {
+                "channels": {
+                  "temperature1": {
+                      "name": "Temperature Sensor outside the house",
+                      "value": "12.8"
+                  },
+                  "temperature2": {
+                      "name": "Temperature Sensor inside the house",
+                      "value": "20.8"
+                  },
+                  "density": {
+                      "name": "Density Sensor in the Bathroom",
+                      "value": "63"
+                  },
+                  "brightness": {
+                      "name": "Brightness Sensor in the Bedroom",
+                      "value": "520"
+                  }
+                },
+                "timestamp": 1476628372
+            },
+
+        ]
+    }
+
 + Response 403 (application/json)
     {
         "status": 403,
@@ -251,7 +668,7 @@ Retrieve data stored in the platform that is associated to one Stream of a Servi
 501 'Not Implemented' yet.
 
 + Parameters
-    + soID: `2932942f823b82ab34` (required, string) - The id of a Service Object
+    + soID: `23af384834be722938f` (required, string) - The id of a Service Object
     + streamID: `temperature_sensor` (required, string) - The id of the Stream
 
 + Request (application/json)
