@@ -21,7 +21,7 @@ Gateways represents ...
 Service Objects provide the structure how sensor data is going to be stored. They determine which sensors will upload
 their data to the service. Multiple Sensors can be described in one Service Object in so called `Streams`. Every
 sensor can have multiple dimensions, which will be called `Channels`. E.g. a weatherboard with multiple measuring
-devices, e.g. two different for temperature, one for density and one for brightness measuring, is defined in one single
+devices, e.g. two different for temperature, one for humidity and one for brightness measuring, is defined in one single
 `Stream`, but its measurement devices are defined in `Channels`.
 
 For every Service Object and its `Streams` meta data like a name and a description can be added. For `Channels`
@@ -41,13 +41,12 @@ Sensor Data is ...
 + protocol (string, optional) - The protocol the Gateway communicates with
 + port (number, optional) - The port the Gateway communicates at
 
-
 <!-- Service Objects -->
 ## ServiceObject (object)
-+ name (string, required) - The name of the ServiceObject
-+ description (string, required) - The description of the ServiceObject
++ name (string, required) - The name of the Service Object
++ description (string, required) - The description of the Service Object
 + public (string, required) - The availability of the uploaded data associated to the Service Object
-+ streams (array[Stream], required) - A collection of Streams associated to the ServiceObject
++ streams (array[Stream], required) - A collection of Streams associated to the Service Object
 + gateway (GatewaySO, optional) - The gateway where the Service Object is registered at
 
 ## Stream (object)
@@ -149,7 +148,6 @@ Retrieve the description of a Gateway.
 
 
 ### Update an existing Gateway [UPDATE /gateway/{gatewayID}]
-<!-- TODO Phil 17/10/2016 add restrictions to updating -->
 Update the description of a Gateway.
 + Parameters
     + gatewayID: `3294b3fc38e493b93` (required, string) - The id of a Gateway
@@ -246,58 +244,53 @@ Create a new ServiceObject definition and register it at SERIOS. The **unique** 
 
     + Body
         {
-            "name": "Smart Home 1 Weather Sensors",
-            "description": "This Service Object holds all weather related sensors of Smart Home 1.",
-            "public": "true",
-            "streams": {
-                "weatherboard": {
-                    "name": "Weatherboard",
-                    "description": "The sensor that measures temperature, density and brightness of the Smart Home.",
-                    "channels": {
-                        "temperature1": {
-                            "name": "Temperature Sensor outside the house",
-                            "type": "Number",
-                            "unit": "Grad Celsius"
+            name: "Smart Home 1 Weather Sensors",
+            description: "This Service Object holds all weather related sensors of Smart Home 1.",
+            public: true,
+            streams: [
+                {
+                    name: "Weatherboard",
+                    description: "The sensor that measures temperature, humidity and brightness of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Temperature Sensor outside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
                         },
-                        "temperature2": {
-                            "name": "Temperature Sensor inside the house",
-                            "type": "Number",
-                            "unit": "Grad Celsius"
+                        {
+                            name: "Temperature Sensor inside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
                         },
-                        "density": {
-                            "name": "Density Sensor in the bathroom",
-                            "type": "Number",
-                            "unit": "Relative Density"
+                        {
+                            name: "Humidity Sensor in the bathroom",
+                            type: "Number",
+                            unit: "Relative Humidity"
                         },
-                        "brightness": {
-                            "name": "Brightness Sensor in the bedroom.",
-                            "type": "Number",
-                            "unit": "Lux"
+                        {
+                            name: "Brightness Sensor in the bedroom.",
+                            type: "Number",
+                            unit: "Lux"
                         }
-                    }
+                    ]
                 },
-                "location": {
-                    "name":"Location Sensor",
-                    "description":"The sensor that measures the location of the Smart Home.",
-                    "channels": {
-                        "latitude": {
-                            "name": "Latitude of the Smart Home",
-                            "type": "Number",
-                            "unit": "Degrees"
+                {
+                    name: "Location Sensor",
+                    description: "The sensor that measures the location of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Latitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
                         },
-                        "longitude": {
-                            "name": "Longitude of the Smart Home",
-                            "type": "Number",
-                            "unit": "Degrees"
+                        {
+                            name: "Longitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
                         }
-                    }
+                    ]
                 }
-            },
-            "gateway": {
-                "gatewayID": "",
-                "name": "Smart Home 1",
-                "URL": "https://gateway_test.com/dir/to/my/gateway/",
-            }
+            ],
         }
 
 + Response 201 (application/json)
@@ -331,58 +324,53 @@ Retrieve the description of a Service Object.
 
     + Body
         {
-            "name": "Smart Home 1 Weather Sensors",
-            "description": "This Service Object holds all weather related sensors of Smart Home 1.",
-            "public": "true",
-            "streams": {
-                "weatherboard": {
-                    "name": "Weatherboard",
-                    "description": "The sensor that measures temperature, density and brightness of the Smart Home.",
-                    "channels": {
-                        "temperature1": {
-                            "name": "Temperature Sensor outside the house",
-                            "type": "Number",
-                            "unit": "Grad Celsius"
+            name: "Smart Home 1 Weather Sensors",
+            description: "This Service Object holds all weather related sensors of Smart Home 1.",
+            public: true,
+            streams: [
+                {
+                    name: "Weatherboard",
+                    description: "The sensor that measures temperature, humidity and brightness of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Temperature Sensor outside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
                         },
-                        "temperature2": {
-                            "name": "Temperature Sensor inside the house",
-                            "type": "Number",
-                            "unit": "Grad Celsius"
+                        {
+                            name: "Temperature Sensor inside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
                         },
-                        "density": {
-                            "name": "Density Sensor in the bathroom",
-                            "type": "Number",
-                            "unit": "Relative Density"
+                        {
+                            name: "Humidity Sensor in the bathroom",
+                            type: "Number",
+                            unit: "Relative Humidity"
                         },
-                        "brightness": {
-                            "name": "Brightness Sensor in the bedroom.",
-                            "type": "Number",
-                            "unit": "Lux"
+                        {
+                            name: "Brightness Sensor in the bedroom.",
+                            type: "Number",
+                            unit: "Lux"
                         }
-                    }
+                    ]
                 },
-                "location": {
-                    "name":"Location Sensor",
-                    "description":"The sensor that measures the location of the Smart Home.",
-                    "channels": {
-                        "latitude": {
-                            "name": "Latitude of the Smart Home",
-                            "type": "Number",
-                            "unit": "Degrees"
+                {
+                    name: "Location Sensor",
+                    description: "The sensor that measures the location of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Latitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
                         },
-                        "longitude": {
-                            "name": "Longitude of the Smart Home",
-                            "type": "Number",
-                            "unit": "Degrees"
+                        {
+                            name: "Longitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
                         }
-                    }
+                    ]
                 }
-            },
-            "gateway": {
-                "gatewayID": "",
-                "name": "Smart Home 1",
-                "URL": "https://gateway_test.com/dir/to/my/gateway/",
-            }
+            ],
         }
 
 + Response 400 (application/json)
@@ -411,58 +399,53 @@ Update the description of a Service Object.
 
     + Body
         {
-            "name": "Smart Home 1 Weather Sensors",
-            "description": "This Service Object holds all weather related sensors of Smart Home 1.",
-            "public": "true",
-            "streams": {
-                "weatherboard": {
-                    "name": "Weatherboard",
-                    "description": "The sensor that measures temperature, density and brightness of the Smart Home.",
-                    "channels": {
-                        "temperature1": {
-                            "name": "Temperature Sensor outside the house",
-                            "type": "Number",
-                            "unit": "Grad Celsius"
+            name: "Smart Home 1 Weather Sensors",
+            description: "This Service Object holds all weather related sensors of Smart Home 1.",
+            public: true,
+            streams: [
+                {
+                    name: "Weatherboard",
+                    description: "The sensor that measures temperature, humidity and brightness of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Temperature Sensor outside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
                         },
-                        "temperature2": {
-                            "name": "Temperature Sensor inside the house",
-                            "type": "Number",
-                            "unit": "Grad Celsius"
+                        {
+                            name: "Temperature Sensor inside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
                         },
-                        "density": {
-                            "name": "Density Sensor in the bathroom",
-                            "type": "Number",
-                            "unit": "Relative Density"
+                        {
+                            name: "Humidity Sensor in the bathroom",
+                            type: "Number",
+                            unit: "Relative Humidity"
                         },
-                        "brightness": {
-                            "name": "Brightness Sensor in the bedroom.",
-                            "type": "Number",
-                            "unit": "Lux"
+                        {
+                            name: "Brightness Sensor in the bedroom.",
+                            type: "Number",
+                            unit: "Lux"
                         }
-                    }
+                    ]
                 },
-                "location": {
-                    "name":"Location Sensor",
-                    "description":"The sensor that measures the location of the Smart Home.",
-                    "channels": {
-                        "latitude": {
-                            "name": "Latitude of the Smart Home",
-                            "type": "Number",
-                            "unit": "Degrees"
+                {
+                    name: "Location Sensor",
+                    description: "The sensor that measures the location of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Latitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
                         },
-                        "longitude": {
-                            "name": "Longitude of the Smart Home",
-                            "type": "Number",
-                            "unit": "Degrees"
+                        {
+                            name: "Longitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
                         }
-                    }
+                    ]
                 }
-            },
-            "gateway": {
-                "gatewayID": "",
-                "name": "Smart Home 1",
-                "URL": "https://gateway_test.com/dir/to/my/gateway/",
-            }
+            ],
         }
 
 
@@ -526,6 +509,8 @@ Retrieve all the Service Object IDs from a given user (identified by the `Author
 ### Get the description of all associated Streams [GET /{soID}]
 Retrieve the description of the streams field.
 
+This feature is not implemented yet!
+
 + Parameters
     + soID: `23af384834be722938f` (required, string) - The id of a Service Object
 
@@ -535,6 +520,54 @@ Retrieve the description of the streams field.
 
 + Response 200 (application/json)
     + Attributes (array[Stream])
+
+    + Body
+        {
+            streams: [
+                {
+                    name: "Weatherboard",
+                    description: "The sensor that measures temperature, humidity and brightness of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Temperature Sensor outside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
+                        },
+                        {
+                            name: "Temperature Sensor inside the house",
+                            type: "Number",
+                            unit: "Grad Celsius"
+                        },
+                        {
+                            name: "Humidity Sensor in the bathroom",
+                            type: "Number",
+                            unit: "Relative Humidity"
+                        },
+                        {
+                            name: "Brightness Sensor in the bedroom.",
+                            type: "Number",
+                            unit: "Lux"
+                        }
+                    ]
+                },
+                {
+                    name: "Location Sensor",
+                    description: "The sensor that measures the location of the Smart Home.",
+                    channels: [
+                        {
+                            name: "Latitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
+                        },
+                        {
+                            name: "Longitude of the Smart Home",
+                            type: "Number",
+                            unit: "Degrees"
+                        }
+                    ]
+                }
+            ],
+        }
 
 + Response 403 (application/json)
     {
@@ -562,24 +595,26 @@ Store new data associated to the Stream of the Service Object.
     + Attributes (SensorData)
 
     + Body
-            "channels": {
-                "temperature1": {
-                    "name": "Temperature Sensor outside the house",
-                    "value": "10.2"
+        {
+            channels: [
+                {
+                    name: "temperature1",
+                    value: "10.2"
                 },
-                "temperature2": {
-                    "name": "Temperature Sensor inside the house",
-                    "value": "20.8"
+                {
+                    name: "temperature2",
+                    value: "20.8"
                 },
-                "density": {
-                    "name": "Density Sensor in the Bathroom",
-                    "value": "63"
+                {
+                    name: "humidity",
+                    value: "63"
                 },
-                "brightness": {
-                    "name": "Brightness Sensor in the Bedroom",
-                    "value": "970"
+                {
+                    name: "brightness",
+                    value: "970"
                 }
-            }
+            ]
+        }
 
 + Response 201 (application/json)
     {
@@ -637,48 +672,47 @@ Retrieve data stored in the platform that is associated to one Stream of a Servi
     {
         "data": [
             {
-                "channels": {
-                  "temperature1": {
-                      "name": "Temperature Sensor outside the house",
-                      "value": "19.2"
-                  },
-                  "temperature2": {
-                      "name": "Temperature Sensor inside the house",
-                      "value": "22.0"
-                  },
-                  "density": {
-                      "name": "Density Sensor in the Bathroom",
-                      "value": "45"
-                  },
-                  "brightness": {
-                      "name": "Brightness Sensor in the Bedroom",
-                      "value": "980"
-                  }
-                },
+                channels: [
+                    {
+                        name: "temperature1",
+                        value: "10.2"
+                    },
+                    {
+                        name: "temperature2",
+                        value: "20.8"
+                    },
+                    {
+                        name: "humidity",
+                        value: "63"
+                    },
+                    {
+                        name: "brightness",
+                        value: "520"
+                    }
+                ]
                 "timestamp": 1476697345
             },
             {
-                "channels": {
-                  "temperature1": {
-                      "name": "Temperature Sensor outside the house",
-                      "value": "12.8"
-                  },
-                  "temperature2": {
-                      "name": "Temperature Sensor inside the house",
-                      "value": "20.8"
-                  },
-                  "density": {
-                      "name": "Density Sensor in the Bathroom",
-                      "value": "63"
-                  },
-                  "brightness": {
-                      "name": "Brightness Sensor in the Bedroom",
-                      "value": "520"
-                  }
-                },
-                "timestamp": 1476628372
+                channels: [
+                    {
+                        name: "temperature1",
+                        value: "12.8"
+                    },
+                    {
+                        name: "temperature2",
+                        value: "21.2"
+                    },
+                    {
+                        name: "humidity",
+                        value: "68"
+                    },
+                    {
+                        name: "brightness",
+                        value: "970"
+                    }
+                ]
+                "timestamp": 1476643579
             },
-
         ]
     }
 
